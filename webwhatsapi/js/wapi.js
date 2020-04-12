@@ -1225,27 +1225,27 @@ window.WAPI.getBufferedNewMessages = function (done) {
 /** End new messages observable functions **/
 
 window.WAPI.sendImage = function (imgBase64, chatid, filename, caption, done) {
-//var idUser = new window.Store.UserConstructor(chatid);
-var idUser = new window.Store.UserConstructor(chatid, { intentionallyUsePrivateConstructor: true });
-// create new chat
-return Store.Chat.find(idUser).then((chat) => {
-    var mediaBlob = window.WAPI.base64ImageToFile(imgBase64, filename);
-    var mc = new Store.MediaCollection(chat);
+    //var idUser = new window.Store.UserConstructor(chatid);
+    var idUser = new window.Store.UserConstructor(chatid, { intentionallyUsePrivateConstructor: true });
+    // create new chat
+    return Store.Chat.find(idUser).then((chat) => {
+        var mediaBlob = window.WAPI.base64ImageToFile(imgBase64, filename);
+        var mc = new Store.MediaCollection(chat);
 
-    if (Debug.VERSION === '0.4.613') {
-        mc.processAttachments([mediaBlob], chat, 1).then(() => {
-            var media = mc.models[0];
-            media.sendToChat(chat, {caption: caption});
-            if (done !== undefined) done(true);
-        });
-    } else {
-            mc.processAttachments([{file: mediaBlob}], chat, 1).then(() => {
-            var media = mc.models[0];
-            media.sendToChat(chat, {caption: caption});
-            if (done !== undefined) done(true);
-        });
-    }
-});
+        if (Debug.VERSION === '0.4.613') {
+            mc.processAttachments([mediaBlob], chat, 1).then(() => {
+                var media = mc.models[0];
+                media.sendToChat(chat, {caption: caption});
+                if (done !== undefined) done(true);
+            });
+        } else {
+                mc.processAttachments([{file: mediaBlob}], chat, 1).then(() => {
+                var media = mc.models[0];
+                media.sendToChat(chat, {caption: caption});
+                if (done !== undefined) done(true);
+            });
+        }
+    });
 }
 
 window.WAPI.base64ImageToFile = function (b64Data, filename) {
