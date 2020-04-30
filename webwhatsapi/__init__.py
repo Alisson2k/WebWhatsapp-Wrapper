@@ -171,6 +171,7 @@ class WhatsAPIDriver(object):
         if self.client == "firefox":
             if self._profile_path is not None:
                 self._profile = webdriver.FirefoxProfile(self._profile_path)
+                self._profile.set_preference('media.gstreamer.enabled', True)
             else:
                 self._profile = webdriver.FirefoxProfile()
             if not loadstyles:
@@ -561,7 +562,6 @@ class WhatsAPIDriver(object):
 
     def chat_send_message(self, chat_id, message):
         result = self.wapi_functions.sendMessage(chat_id, message)
-
         if not isinstance(result, bool):
             return factory_message(result, self)
         return result

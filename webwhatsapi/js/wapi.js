@@ -1233,9 +1233,9 @@ window.WAPI.sendImage = function (imgBase64, chatid, filename, caption, done) {
         var mc = new Store.MediaCollection(chat);
 
         mc.processAttachments([{file: mediaBlob}], chat, 1).then(() => {
+            done(true)
             var media = mc.models[0];
             media.sendToChat(chat, {caption: caption});
-            if (done !== undefined) done(true);
         });
     });
 }
